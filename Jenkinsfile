@@ -31,8 +31,9 @@ pipeline{
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
-                        sshagent(credentials: ['deploy_ssh_key'])
-                        sh "scp -o StrictHostKeyChecking=no **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat/webapps"
+                        sshagent(credentials: ['deploy_ssh_key']){
+                            sh "scp -o StrictHostKeyChecking=no **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat/webapps"
+                        }
                     }
                 }
 
