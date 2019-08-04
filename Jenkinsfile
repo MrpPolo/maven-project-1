@@ -1,9 +1,15 @@
-pipeline {
+pipeline{
     agent any
 
-    tools{
-        maven 'local maven'
+    parameters{
+        string(name: 'tomcat_dev', defaultValue: '54.199.185.207', description: 'Staging Server')
+        string(name: 'tomcat_prod', defaultValue: '54.199.185.207', description: 'Production Server')
     }
+
+    triggers{
+        pollSCM('* * * * *')
+    }
+
 
     stages{
         stage('Build'){
@@ -17,26 +23,22 @@ pipeline {
                 }
             }
         }
-        stage('Deploy-to-stage'){
-            steps{
-                build job:'deploy-to-stagging'
+
+    stage ('Deployments'){
+        sshagent(credentials: ['deploy_ssh_key'])
+        parallel{
+            stage ('Deploy to Staging'){
+                steps {
+                    sh "scp **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat/webapps"
+                }
             }
+
+            // stage ("Deploy to Production"){
+            //     steps {
+            //         sh "scp **/target/*.war ec2-user@${params.tomcat_prod}:/var/lib/tomcat/webapps"
+            //     }
+            // }
         }
-        stage('Deploy-to-production'){
-            steps{
-                timeout(time:5,unit:'DAYS'){
-                    input message:'是否deploy to production'
-                }
-                build job:'deploy-to-production'
-            }
-            post {
-                success {
-                    echo 'success...'
-                }
-                failure {
-                    echo 'failure...'
-                }
-            }
-        }
-    }
+    }   
+
 }
