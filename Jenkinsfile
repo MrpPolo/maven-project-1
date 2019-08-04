@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    tools{
+        maven 'local maven'
+    }
+
     stages{
         stage('Init'){
             steps {
@@ -8,7 +13,7 @@ pipeline {
         }
         stage('Build'){
                 steps {
-                    echo "Building......"
+                    sh 'mvn clean package'
                 }
             }
         stage('Deploy'){
