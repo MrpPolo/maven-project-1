@@ -25,10 +25,10 @@ pipeline{
         }
 
         stage ('Deployments'){
-            sshagent(credentials: ['deploy_ssh_key'])
             parallel{
                 stage ('Deploy to Staging'){
                     steps {
+                        sshagent(credentials: ['deploy_ssh_key'])
                         sh "scp **/target/*.war ec2-user@${params.tomcat_dev}:/var/lib/tomcat/webapps"
                     }
                 }
