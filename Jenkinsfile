@@ -53,7 +53,8 @@ pipeline{
                 docker { image 'maven:3-alpine' }
             }
             steps{
-                sh 'mvn clean package'
+                sh 'pwd'
+                sh 'ls -al'
                 sh "echo '111'>111.txt"
                 // sh "docker build . -t tomcattw:${env.BUILD_ID}"
             }
