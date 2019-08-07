@@ -67,5 +67,10 @@ pipeline{
                 sh 'ls -al'
             }
         }
+        stage('clear image'){
+            steps{
+                sh 'docker rm node:7-alpine'
+            }
+        }
     }
 }
