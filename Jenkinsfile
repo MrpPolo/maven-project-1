@@ -58,7 +58,7 @@ pipeline{
                 // sh "docker build . -t tomcattw:${env.BUILD_ID}"
             }
         }
-        stage('build'){
+        stage('ls'){
             agent {
                 docker { image 'node:7-alpine' }
             }
