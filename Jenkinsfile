@@ -49,9 +49,21 @@ pipeline{
 
     stages{
         stage('build'){
+            agent {
+                docker { image 'maven:3-alpine' }
+            }
             steps{
                 sh 'mvn clean package'
-                sh "docker build . -t tomcattw:${env.BUILD_ID}"
+                sh "echo '111'>111.txt"
+                // sh "docker build . -t tomcattw:${env.BUILD_ID}"
+            }
+        }
+        stage('build'){
+            agent {
+                docker { image 'node:7-alpine' }
+            }
+            steps{
+                sh 'ls -al'
             }
         }
     }
