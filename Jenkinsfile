@@ -63,8 +63,12 @@ pipeline{
             agent {
                 docker { image 'node:7-alpine' }
             }
+            environment {
+                TEST = credentials('test')
+            }
             steps{
                 sh 'ls -al'
+                sh 'env'
             }
         }
         stage('clear image'){
