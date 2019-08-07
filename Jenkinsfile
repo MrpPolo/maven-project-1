@@ -69,7 +69,7 @@ pipeline{
         }
         stage('clear image'){
             steps{
-                sh 'docker rm node:7-alpine'
+                sh 'docker image rm node:7-alpine'
             }
         }
     }
